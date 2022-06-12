@@ -28,6 +28,19 @@ module.exports = class Cart {
 			});
 		});
 	}
+	static deleteProduct(id, productPrice) {
+		fs.readFile(p, (err, fileContent) => {
+			if (err) {
+				return;
+			}
+			let cart = { ...JSON.parse(fileContent) };
+			const product = cart.products.find((prod) => prod.id === id);
+			const updatedProducts = cart.products.filter((prod) => prod.id !== id);
+			console.log(cart);
+			cart.products = updatedProducts;
+			cart.price -= productPrice * product.qty;
+		});
+	}
 };
 
 // const fs = require('fs');

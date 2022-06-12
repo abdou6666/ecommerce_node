@@ -1,1 +1,7 @@
-{"products":[{"id":"123","qty":2},{"id":"1","qty":2}],"tottalPrice":98}
+{
+    "products": [{
+        "id": "0.4462384596100737",
+        "qty": 5
+    }],
+    "tottalPrice": 12.3
+}
