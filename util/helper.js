@@ -8,6 +8,8 @@ const Product = require('../models/product');
 const User = require('../models/user');
 const Cart = require('../models/Cart');
 const CartItem = require('../models/cart-item');
+const OrderItem = require('../models/order-item');
+const Order = require('../models/order');
 
 const bodyParser = require('body-parser');
 
@@ -34,20 +36,23 @@ async function startServer() {
 		app.use(errorController.get404);
 
 		// associations
-		Product.belongsTo(User, { constraint: true, onDelete: 'cascade' });
+		Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 		User.hasMany(Product);
 		User.hasOne(Cart);
 		Cart.belongsTo(User);
 		Cart.belongsToMany(Product, { through: CartItem });
-		Product.belongsTo(Cart, { through: CartItem });
+		Product.belongsToMany(Cart, { through: CartItem });
+
+		Order.belongsTo(User);
+		User.hasMany(Order);
+		Order.belongsToMany(Product, { through: OrderItem });
 
 		//await sequelize.sync({ force: true });
 		await sequelize.sync();
 		const user = await User.findByPk(1);
 		if (!user) {
-			User.create({ name: 'abdou', email: 'abdousfayhi12@gmail.com' });
-			const cart = await User.createCart();
-			console.log('app  : ', cart);
+			const usr = await User.create({ name: 'abdou', email: 'abdousfayhi12@gmail.com' });
+			await usr.createCart();
 		}
 
 		app.listen(3000);
